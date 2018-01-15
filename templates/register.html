@@ -1,63 +1,27 @@
-<!DOCTYPE html>
+{% extends "layout.html" %}
 
-<html>
-	<head>
-		<title>The Wall</title>
+{% block content %}
+	<div id="content-login">
+		<h1>Register</h1>
+		<div id="login-box">
+			<form action="/register/process" method="post">
+				<div>
+					<div class="login-label">Username</div>
+					<input type="text" class="login-input" name="username">
 
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
-	</head>
+					<div class="login-label">Email</div>
+					<input type="text" class="login-input" name="email">
 
-	<body>
-		<div id="wrapper">
-			<div id="navbar">
-				<span>CodingDojo Wall</span>
-
-				{% if session["username"] == None %}
-					<span>
-						Not logged in
-
-						<a id="log-in" href="/login">Log in</a>
-						or
-						<a href="/register">Register</a>
-					</span>
-				{% else %}
-					<span>
-						Welcome, {{ session["username"] }}
-
-						<a id="log-out" href="/logout">Log out</a>
-					</span>
-				{% endif %}
-			</div>
-
-			<div id="content-login">
-				<h1>Register</h1>
-				<div id="login-box">
-					<form action="/register/process" method="post">
-						<div>
-							<div class="login-label">Username</div>
-							<input type="text" class="login-input" name="username">
-
-							<div class="login-label">Email</div>
-							<input type="text" class="login-input" name="email">
-
-							<div class="login-label">Password</div>
-							<input type="password" class="login-input" name="password">
-						</div>
-
-						<input type="submit" value="Register">
-					</form>
+					<div class="login-label">Password</div>
+					<input type="password" class="login-input" name="password">
 				</div>
 
-				<div id="login-message">
-					{% if processed %}
-						{% if success %}
-							Successfully registered in as {{ session["username"] }}.
-						{% else %}
-							Username or email is already in use.
-						{% endif %}
-					{% endif %}
-				</div>
-			</div>
+				<input type="submit" value="Register">
+			</form>
 		</div>
-	</body>
-</html>
+
+		<div id="login-message">
+			{{ message }}
+		</div>
+	</div>
+{% endblock %}

@@ -1,49 +1,19 @@
-<!DOCTYPE html>
+{% extends "layout.html" %}
 
-<html>
-	<head>
-		<title>The Wall</title>
-
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
-	</head>
-
-	<body>
-		<div id="wrapper">
-			<div id="navbar">
-				<span>CodingDojo Wall</span>
-
-				{% if session["username"] == None %}
-					<span>
-						Not logged in
-
-						<a id="log-in" href="/login">Log in</a>
-						or
-						<a href="/register">Register</a>
-					</span>
-				{% else %}
-					<span>
-						Welcome, {{ session["username"] }}
-
-						<a id="log-out" href="/logout">Log out</a>
-					</span>
-				{% endif %}
-			</div>
-
-			<div id="content">
-				<div id="new-message">
-					<h2>Post a message</h2>
-					<div id="new-message-textarea-container"><textarea id="new-message-textarea"></textarea></div>
-					<span>&nbsp;</span><input id="new-message-submit" type="submit">
-				</div>
-
-				<div class="fake-hr"></div>
-
-				{% for message in messages %}
-					
-				{% else %}
-
-				{% endfor %}
-			</div>
+{% block content %}
+	<div id="content">
+		<div id="new-message">
+			<h2>Post a message</h2>
+			<div id="new-message-textarea-container"><textarea id="new-message-textarea"></textarea></div>
+			<span>&nbsp;</span><input id="new-message-submit" type="submit">
 		</div>
-	</body>
-</html>
+
+		<div class="fake-hr"></div>
+
+		{% for message in messages %}
+			
+		{% else %}
+
+		{% endfor %}
+	</div>
+{% endblock %}

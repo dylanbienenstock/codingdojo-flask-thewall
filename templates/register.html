@@ -49,10 +49,12 @@
 				</div>
 
 				<div id="login-message">
-					{% if success %}
-						Successfully registered in as {{ session["username"] }}.
-					{% else %}
-						Username or email is already in use.
+					{% if processed %}
+						{% if success %}
+							Successfully registered in as {{ session["username"] }}.
+						{% else %}
+							Username or email is already in use.
+						{% endif %}
 					{% endif %}
 				</div>
 			</div>

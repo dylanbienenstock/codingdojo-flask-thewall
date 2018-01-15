@@ -46,10 +46,12 @@
 				</div>
 
 				<div id="login-message">
-					{% if success %}
-						Successfully logged in as {{ session["username"] }}.
-					{% elif failure %}
-						oh no
+					{% if processed %}
+						{% if success %}
+							Successfully logged in as {{ session["username"] }}.
+						{% else %}
+							Invalid login details.
+						{% endif %}
 					{% endif %}
 				</div>
 			</div>

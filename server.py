@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, session
 from mysqlconnection import MySQLConnector
-import os, md5, binascii
+import os, md5, binascii, datetime
 
 app = Flask(__name__)
 app.secret_key = ":)"
@@ -17,6 +17,8 @@ def index():
 
 	return render_template("index.html", messages=messages)
 
+################## LOG IN ##################
+
 @app.route("/login")
 def login():
 	setup_session()
@@ -32,6 +34,14 @@ def process_login():
 
 	return render_template("login.html", success=True)
 
+################## REGISTRATION ##################
+
+@app.route("/register")
+def register():
+	setup_session()
+
+	return render_template("register.html")
+
 @app.route("/register/process", methods=["POST"])
 def process_register():
 	success = False
@@ -45,16 +55,17 @@ def process_register():
 	if len(mysql.query_db(select_query, select_data)) == 0: # Valid registration
 		success = True
 
-		insert_query = "INSERT INTO users (username, password_hash, password_salt, email, created at, updated_at) "
-		insert_query += "VALUES (:username, :password_hash, :password_salt, :email, NOW(), NOW())"
+		insert_query = "INSERT INTO users (username, password_hash, password_salt, email, created_at, updated_at) "
+		insert_query += "VALUES (:username, :password_hash, :password_salt, :email, :now, :now)"
 
-		password_salt = binascii.b2a_hex(os.urandom(15))
+		password_salt = str(binascii.b2a_hex(os.urandom(15)))
 
 		insert_data = {
 			"username": request.form["username"],
 			"password_hash": md5.new(request.form["password"] + password_salt).hexdigest(),
 			"password_salt": password_salt,
-			"email": request.form["email"]
+			"email": request.form["email"],
+			"now": str(datetime.datetime.now()) # because NOW() doesn't work for some reason
 		}
 
 		mysql.query_db(insert_query, insert_data)
@@ -63,13 +74,7 @@ def process_register():
 
 		session["username"] = request.form["username"]
 
-	return render_template("login.html", success=success)
-
-@app.route("/register")
-def login():
-	setup_session()
-
-	return render_template("register.html")
+	return render_template("register.html", success=success)
 
 @app.route("/logout")
 def logout():

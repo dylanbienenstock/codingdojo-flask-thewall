@@ -11,7 +11,7 @@
 				<form id="new-message-form" action="/post/message" method="post">
 					<h2>Post a message</h2>
 
-					<div id="new-message-textarea-container">
+					<div class="textarea-container">
 						<textarea form="new-message-form" name="message"></textarea>
 					</div>
 
@@ -34,8 +34,18 @@
 					</span>
 				</div>
 
-				<div class="message-box">
+				<div class="message-box" data-message-id="{{ message['message_id'] }}">
 					{{ message["message_text"] }}
+				</div>
+
+				<div class="reply-form" id="reply-container-{{ message['message_id'] }}">
+					<form id="reply-to-{{ message['message_id'] }}">
+						<div class="textarea-container">
+							<textarea form="reply-to-{{ message['message_id'] }}" name="comment">NOT FUNCTIONAL YET SORRY</textarea>
+						</div>
+
+						<input type="submit">
+					</form>
 				</div>
 			</div>
 		{% else %}

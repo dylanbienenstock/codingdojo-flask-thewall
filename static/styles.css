@@ -31,7 +31,7 @@ input[type=submit] {
 	float: right;
 }
 
-#new-message-textarea-container {
+.textarea-container {
 	box-sizing: border-box;
 	padding-right: 6px;
 }
@@ -60,6 +60,21 @@ input[type=submit] {
 .message-box {
 	padding: 16px;
 	border: 2px solid black;
+	cursor: pointer;
+
+	-webkit-transition: background 200ms ease;
+	-moz-transition: background 200ms ease;
+	-ms-transition: background 200ms ease;
+	-o-transition: background 200ms ease;
+	transition: background 200ms ease;
+}
+
+.message-box:hover {
+	background-color: #CCC;
+}
+
+.reply-form {
+	display: none;
 }
 
 /* --------------- Log in page ----------------- */

@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, session, redirect
 from mysqlconnection import MySQLConnector
-import os, md5, binascii, datetime
+import os, md5, binascii, datetime, re
 
 app = Flask(__name__)
 app.secret_key = ":)"
@@ -18,7 +18,11 @@ def index():
 	setup_session()
 	messages = mysql.query_db("SELECT * FROM messages ORDER BY id DESC")
 
-	return render_template("index.html", messages=messages)
+	return render_template("index.html", message_list=messages)
+
+@app.route("/submit", methods=["POST"])
+def submit():
+	pass
 
 ################## LOG IN ##################
 
@@ -66,8 +70,31 @@ def register():
 
 	return render_template("message.html", message="You are already logged in.")
 
+def validate_registration(form):
+	errors = []
+
+	username_regex = r"^[a-zA-Z0-9][ A-Za-z0-9_-]*$"
+	email_regex = r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"
+
+	if len(form["username"]) < 3:
+		errors += ["Username must be at least 3 characters long."]
+
+	elif not re.match(username_regex, form["username"].rstrip()):
+		errors += ["Username must contain only letters, numbers, hyphens, and underscores."]
+
+	if len(form["email"]) == 0 or not re.match(email_regex, form["email"].rstrip()):
+		errors += ["Invalid email address."]
+
+	return errors
+
+
 @app.route("/register/process", methods=["POST"])
 def process_register():
+	errors = validate_registration(request.form)
+
+	if len(errors) > 0:
+		return render_template("register.html", message="<br />".join(errors))
+
 	select_query = "SELECT * FROM users WHERE username = :username OR email = :email"
 
 	select_data = {

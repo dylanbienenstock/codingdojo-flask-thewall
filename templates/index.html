@@ -2,25 +2,44 @@
 
 {% block content %}
 	<div id="content">
-		<div id="new-message" action="/submit" method="post">
-			<form id="new-message-form">
-				<h2>Post a message</h2>
+		{% if session["username"] == None %}
+			<div style="text-align: center;">
+				<h1>Please log in to submit a post.</h1>
+			</div>
+		{% else %}
+			<div id="new-message">
+				<form id="new-message-form" action="/post/message" method="post">
+					<h2>Post a message</h2>
 
-				<div id="new-message-textarea-container">
-					<textarea id="new-message-textarea" form="new-message-form"></textarea>
-				</div>
+					<div id="new-message-textarea-container">
+						<textarea form="new-message-form" name="message"></textarea>
+					</div>
 
-				<span>&nbsp;</span>
-				<input id="new-message-submit" type="submit">
-			</form>
-		</div>
+					<span>&nbsp;</span>
+					<input id="new-message-submit" type="submit">
+				</form>
+			</div>
+		{% endif %}
 
 		<div class="fake-hr"></div>
 
 		{% for message in message_list %}
-			
-		{% else %}
+			<div class="message-container">
+				<div class="message-title">
+					{{ message["username"] }}
 
+					<span class="message-timestamp">
+						at {{ message["time"]}} 
+						&nbsp;(id: {{ message["message_id"] }})
+					</span>
+				</div>
+
+				<div class="message-box">
+					{{ message["message_text"] }}
+				</div>
+			</div>
+		{% else %}
+			<h1>No messages yet!</h1>
 		{% endfor %}
 	</div>
 {% endblock %}

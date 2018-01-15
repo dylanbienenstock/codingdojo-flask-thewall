@@ -13,16 +13,53 @@ def setup_session():
 	if not "password_hash" in session:
 		session["password_hash"] = None
 
+def get_message_list():
+	select_query = "SELECT messages.message_text, messages.id AS message_id, messages.updated_at AS time, users.username "
+	select_query += "FROM messages JOIN users ON messages.user_id = users.id "
+	select_query += "ORDER BY messages.id DESC"
+
+	return mysql.query_db(select_query)
+
 @app.route("/")
 def index():
 	setup_session()
-	messages = mysql.query_db("SELECT * FROM messages ORDER BY id DESC")
 
-	return render_template("index.html", message_list=messages)
+	return render_template("index.html", message_list=get_message_list())
 
-@app.route("/submit", methods=["POST"])
+def get_current_user_id():
+	select_query = "SELECT id FROM users WHERE username = :username AND password_hash = :password_hash"
+	select_data = {
+		"username": session["username"],
+		"password_hash": session["password_hash"]
+	}
+
+	user_id = mysql.query_db(select_query, select_data)
+
+	if len(user_id) == 1 and "id" in user_id[0]:
+		return user_id[0]["id"]
+
+	return -1
+
+@app.route("/post/message", methods=["POST"])
 def submit():
-	pass
+	user_id = get_current_user_id()
+
+	if get_current_user_id() != -1:
+		insert_query = "INSERT INTO messages (user_id, message_text, created_at, updated_at) "
+		insert_query += "VALUES (:user_id, :message_text, :now, :now)"
+
+		insert_data = {
+			"user_id": user_id,
+			"message_text": request.form["message"],
+			"now": str(datetime.datetime.now())
+		}
+
+		mysql.query_db(insert_query, insert_data)
+	else:
+		return render_template("message.html", message="Something went wrong. (0)")
+
+	return render_template("index.html", message_list=get_message_list())
+	
 
 ################## LOG IN ##################
 

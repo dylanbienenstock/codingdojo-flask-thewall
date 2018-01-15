@@ -43,6 +43,25 @@ input[type=submit] {
 	margin: 64px 0 64px 0;
 }
 
+.message-container {
+	margin-bottom: 32px;
+}
+
+.message-title {
+	font-size: 22px;
+	font-style: italic;
+	margin-bottom: 4px;
+}
+
+.message-timestamp {
+	font-size: 12px;
+}
+
+.message-box {
+	padding: 16px;
+	border: 2px solid black;
+}
+
 /* --------------- Log in page ----------------- */
 
 #content-login {

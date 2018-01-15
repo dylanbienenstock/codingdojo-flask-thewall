@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>The Wall</title>
+
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+	</head>
+
+	<body>
+		<div id="wrapper">
+			<div id="navbar">
+				<span>CodingDojo Wall</span>
+
+				{% if session["username"] == None %}
+					<span>
+						Not logged in
+
+						<a id="log-in" href="/login">Log in</a>
+						or
+						<a href="/register">Register</a>
+					</span>
+				{% else %}
+					<span>
+						Welcome, {{ session["username"] }}
+
+						<a id="log-out" href="/logout">Log out</a>
+					</span>
+				{% endif %}
+			</div>
+
+			<div id="content-login">
+				<h1>Log in</h1>
+				<div id="login-box">
+					<form action="/login/process" method="post">
+						<div>
+							<div class="login-label">Username</div>
+							<input type="text" class="login-input" name="username">
+
+							<div class="login-label">Password</div>
+							<input type="password" class="login-input" name="password`">
+						</div>
+
+						<input type="submit" value="Log In">
+					</form>
+				</div>
+
+				<div id="login-message">
+					{% if success %}
+						Successfully logged in as {{ session["username"] }}.
+					{% elif failure %}
+						oh no
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

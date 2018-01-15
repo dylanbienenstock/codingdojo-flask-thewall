@@ -1,0 +1,71 @@
+body {
+	padding: 0;
+	margin: 0;
+}
+
+#navbar {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+
+	font-size: 18px;
+	border-bottom: 2px solid black;
+	padding: 10px;
+}
+
+#log-in {
+	margin-left: 32px;
+}
+
+#content {
+	padding: 32px 128px 32px 128px;
+}
+
+textarea {
+	width: 100%;
+	height: 100px;
+	margin-bottom: 8px;
+}
+
+input[type=submit] {
+	float: right;
+}
+
+#new-message-textarea-container {
+	box-sizing: border-box;
+	padding-right: 6px;
+}
+
+.fake-hr {
+	background-color: black;
+	width: 100%;
+	height: 2px;
+	margin: 64px 0 64px 0;
+}
+
+/* --------------- Log in page ----------------- */
+
+#content-login {
+	padding: 32px 128px 32px 128px;
+	text-align: center;
+}
+
+#login-box {
+	display: inline-block;
+	padding: 32px;
+	border: 2px solid black;
+	text-align: left;
+}
+
+.login-label {
+	font-size: 18px;
+	margin-bottom: 5px;
+}
+
+.login-input {
+	margin-bottom: 20px;
+}
+
+#login-message {
+	margin-top: 10px;
+}

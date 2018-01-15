@@ -2,15 +2,22 @@
 
 {% block content %}
 	<div id="content">
-		<div id="new-message">
-			<h2>Post a message</h2>
-			<div id="new-message-textarea-container"><textarea id="new-message-textarea"></textarea></div>
-			<span>&nbsp;</span><input id="new-message-submit" type="submit">
+		<div id="new-message" action="/submit" method="post">
+			<form id="new-message-form">
+				<h2>Post a message</h2>
+
+				<div id="new-message-textarea-container">
+					<textarea id="new-message-textarea" form="new-message-form"></textarea>
+				</div>
+
+				<span>&nbsp;</span>
+				<input id="new-message-submit" type="submit">
+			</form>
 		</div>
 
 		<div class="fake-hr"></div>
 
-		{% for message in messages %}
+		{% for message in message_list %}
 			
 		{% else %}
 
